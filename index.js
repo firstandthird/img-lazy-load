@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import { ready, find, styles } from 'domassist';
+import { find, styles } from 'domassist';
 
 export default function loadImages () {
   // Find all images
@@ -18,4 +18,15 @@ export default function loadImages () {
   });
 }
 
-ready(loadImages);
+let onloadCallback = loadImages;
+
+if (window.onload) {
+  const onload = window.onload;
+
+  onloadCallback = () => {
+    onload();
+    loadImages();
+  };
+}
+
+window.onload = onloadCallback;
